@@ -1,35 +1,38 @@
-// HOW THIS FILE WORKS (lines starting with // are ignored, so you can delete these)
-//
-// Each day of writing is one block. Separate days with a line of =====
-// Inside a day, write the text several times, each version a little more
-// revised than the last, and separate the versions with a line of ---
-// The page types the first version, then edits its way to the next one.
-//
-// Optional: start a day with a line like  @ Wednesday, November 11
-// and that label shows above the text. Without it, today's date is shown.
-//
-// A day with no --- lines just gets typed out once and then erased.
-//
-// To add a new day: scroll to the bottom, add a line of =====, and write.
-
-@ Monday, November 9
-Woke up late again. The light was strange.
+Write me a story.
 ---
-Woke up late again. The light was strange, almost silver.
+I'm writing a story.
 ---
-Woke up late again. The light was odd, almost silver, like the whole street was underwater.
+You and I are writing a story.
 ---
-Woke up late again. The light was odd, almost silver, like the whole street was underwater.
-
-Made coffee. Forgot to drink it.
+Are we?
+---
 =====
-@ Tuesday, November 10
-I keep thinking about what she said.
+It should be in eight line stanzas. Sixty-four lines total of varied tetrameter.
 ---
-I keep thinking about what she said at dinner.
+8 x 8 = 64.
 ---
-I keep thinking about what she said at dinner. Maybe I read too much into it.
+6 + 4 = 10. 1. Good.
 ---
-I keep thinking about what she said at dinner. Maybe I read too much into it.
+Eight syllables per line. Four feet if it's all iambic or trochaic. Eight stanzas. Sixty-four syllables per stanzas. Thirty-two feet. That's a lot of feet. Five hundred and twelve syllables. Two hundred fifty-six feet. It could all be spondees. It could all be pyrrhic. That's too many feet. 
+---
+5 + 1 + 2 = 8. Good. 
+---
+10 + 8 = 19.
+---
+1 + 9 = 10. Good. 
+---
+Did we count the feet?
+---
+So it's a poem?
+---
+Write me a poem about you. 
+=====
+If I may lay my arms on you
+Then that would be the end of me. 
+On an evening when the twilight
+Limns and loafs between the hours,
+Falling like the noon behind her
+Rising in the moon before him
+The night comes on like a sunrise
+drifts westward from the other side.
 
-Or maybe it was just a sentence.
