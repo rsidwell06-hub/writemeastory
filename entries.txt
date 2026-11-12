@@ -1,0 +1,35 @@
+// HOW THIS FILE WORKS (lines starting with // are ignored, so you can delete these)
+//
+// Each day of writing is one block. Separate days with a line of =====
+// Inside a day, write the text several times, each version a little more
+// revised than the last, and separate the versions with a line of ---
+// The page types the first version, then edits its way to the next one.
+//
+// Optional: start a day with a line like  @ Wednesday, November 11
+// and that label shows above the text. Without it, today's date is shown.
+//
+// A day with no --- lines just gets typed out once and then erased.
+//
+// To add a new day: scroll to the bottom, add a line of =====, and write.
+
+@ Monday, November 9
+Woke up late again. The light was strange.
+---
+Woke up late again. The light was strange, almost silver.
+---
+Woke up late again. The light was odd, almost silver, like the whole street was underwater.
+---
+Woke up late again. The light was odd, almost silver, like the whole street was underwater.
+
+Made coffee. Forgot to drink it.
+=====
+@ Tuesday, November 10
+I keep thinking about what she said.
+---
+I keep thinking about what she said at dinner.
+---
+I keep thinking about what she said at dinner. Maybe I read too much into it.
+---
+I keep thinking about what she said at dinner. Maybe I read too much into it.
+
+Or maybe it was just a sentence.

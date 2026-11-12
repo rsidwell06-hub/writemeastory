@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Journal</title>
+<style>
+  :root { --bg: #faf7f2; --ink: #2b2723; --faint: #9a9189; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #17150f; --ink: #e8e2d6; --faint: #7d756a; }
+  }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg); color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  main { width: min(640px, 100% - 32px); }
+  .date { font: 13px/1 ui-monospace, Menlo, monospace; color: var(--faint);
+          letter-spacing: .08em; text-transform: uppercase; margin-bottom: 20px; }
+  #page { font-size: clamp(18px, 2.4vw, 22px); line-height: 1.7;
+          white-space: pre-wrap; min-height: 12em; }
+  .caret { display: inline-block; width: 2px; height: 1.15em; margin: 0 1px;
+           background: var(--ink); vertical-align: text-bottom;
+           animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .caret { animation: none; } }
+</style>
+</head>
+<body>
+<main>
+  <div class="date" id="date"></div>
+  <div id="page"><span id="before"></span><span class="caret"></span><span id="after"></span></div>
+</main>
+
+<script>
+/*
+  You should never need to edit this file.
+  Everything you write lives in entries.txt, next to this file.
+*/
+
+// Shown only if entries.txt can't be loaded (for example, when this file is
+// opened straight from your computer instead of from a website).
+const SAMPLE = `Your writing goes in entries.txt.
+---
+Your writing goes in entries.txt. Once this page is online, it will appear here instead.`;
+
+const $before = document.getElementById("before");
+const $after = document.getElementById("after");
+const $date = document.getElementById("date");
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const rand = (a, b) => a + Math.random() * (b - a);
+
+// ---------- Reading entries.txt ----------
+// Format:   ===== between days,  --- between revisions of one day,
+//           a first line starting with "@" is that day's label,
+//           lines starting with // are notes to yourself and are ignored.
+function parse(raw) {
+  return raw
+    .replace(/\r\n?/g, "\n")
+    .replace(/^\/\/.*$/gm, "")
+    .split(/^={3,}[ \t]*$/m)
+    .map(block => {
+      let label = "";
+      const drafts = block
+        .split(/^-{3,}[ \t]*$/m)
+        .map(d => d.replace(/^\n+/, "").replace(/\s+$/, ""))
+        .map(d => d.replace(/^@([^\n]*)\n?/, (_, l) => { label = label || l.trim(); return ""; })
+                   .replace(/^\n+/, ""))
+        .filter(d => d.length > 0);
+      return { label, drafts };
+    })
+    .filter(e => e.drafts.length > 0);
+}
+
+async function loadEntries() {
+  try {
+    const res = await fetch("entries.txt?v=" + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const entries = parse(await res.text());
+    if (entries.length) return entries;
+  } catch (e) { /* fall through to the sample */ }
+  return parse(SAMPLE);
+}
+
+// ---------- The writer ----------
+let cur = "";   // text currently on the page
+let pos = 0;    // caret position
+let speed = 1;  // multiplier on all delays: lower = faster
+
+function render() {
+  $before.textContent = cur.slice(0, pos);
+  $after.textContent = cur.slice(pos);
+}
+
+// Morph the current text into `target` the way a person would:
+// move to what changed, delete it, type the replacement.
+async function transform(target) {
+  let p = 0;
+  while (p < cur.length && p < target.length && cur[p] === target[p]) p++;
+  let s = 0;
+  while (s < cur.length - p && s < target.length - p &&
+         cur[cur.length - 1 - s] === target[target.length - 1 - s]) s++;
+
+  const deleteEnd = cur.length - s;
+  const insert = target.slice(p, target.length - s);
+
+  while (pos !== deleteEnd) {
+    pos += pos < deleteEnd ? 1 : -1;
+    render();
+    await sleep(18 * speed);
+  }
+  if (deleteEnd > p) await sleep(rand(200, 450) * speed);
+
+  while (pos > p) {
+    cur = cur.slice(0, pos - 1) + cur.slice(pos);
+    pos--;
+    render();
+    await sleep(rand(30, 70) * speed);
+  }
+  if (insert) await sleep(rand(150, 400) * speed);
+
+  for (const ch of insert) {
+    cur = cur.slice(0, pos) + ch + cur.slice(pos);
+    pos++;
+    render();
+    const pause = ",.;:!?\n".includes(ch) ? rand(180, 380) : rand(40, 120);
+    await sleep(pause * speed);
+  }
+}
+
+function today() {
+  return new Date().toLocaleDateString(undefined,
+    { weekday: "long", month: "long", day: "numeric" });
+}
+
+async function main() {
+  while (true) {
+    // Re-read the file every pass, so new entries appear without a refresh.
+    const entries = await loadEntries();
+    for (const entry of entries) {
+      $date.textContent = entry.label || today();
+      for (const draft of entry.drafts) {
+        await transform(draft);
+        await sleep(rand(900, 1800));
+      }
+      await sleep(1500);
+      speed = 0.35;            // erase the page quickly
+      await transform("");
+      speed = 1;
+      await sleep(900);
+    }
+  }
+}
+main();
+</script>
+</body>
+</html>
