@@ -139,7 +139,7 @@ async function main() {
     // Re-read the file every pass, so new entries appear without a refresh.
     const entries = await loadEntries();
     for (const entry of entries) {
-      $date.textContent = entry.label || today();
+      $date.textContent = entry.label || "";
       for (const draft of entry.drafts) {
         await transform(draft);
         await sleep(rand(900, 1800));
